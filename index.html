@@ -73,7 +73,27 @@
     // ❗ Debug properly using the Console
 
     // 👉 CHALLENGE 1
-    function profileActivation() {
+    function profileActivation(profile, reason) {
+      if (typeof profile.active === "undefined"){
+        return "impossible to ascertain status"
+      }
+      if (profile.active){
+        if (typeof profile.reason !== "undefined"){
+          return "confirm status manually"
+        } else {
+          profile.active = false
+          profile.reason = reason
+          return profile
+        }
+      } else {
+        if (typeof profile.reason === "undefined"){
+          return "confirm status manually"
+        } else {
+          delete profile.reason
+          profile.active = true
+          return profile
+        }
+      }
       // 🧠 profileActivation takes two arguments, profile and reason, which are an object and a string respectively
       //  The reason arg is only used -and therefore required- to deactivate profiles, not to activate them
       //  The profile arg has an `active` property holding a Boolean value
@@ -88,7 +108,7 @@
     }
 
     // 👉 CHALLENGE 2
-    function mineSweeper() {
+    function mineSweeper(grid, x, y) {
       // 🧠 mineSweeper takes a grid as its first argument, and coordinates x and y as the second and third args
       //  The grid is an array of arrays in the following format: [["🟥","🟦","🟥"],["🟦","🟥","🟥"],["🟥","🟦","🟦"]]
       //  Each subarray is a row of the grid, the first subarray being the top row:
@@ -107,10 +127,34 @@
       //    * If the player lands on blue, return the string "🟦 🥳"
       // 🧠 Edge cases:
       //    * If the x or y coordinates are under 1 or over 3, return the string "invalid coordinates"
+      if (typeof x !== "number" || typeof y !== "number"){
+        return "Coordinates x & y must both be numbers between one and three"
+      }
+      if (x <1 || x > 3 || y < 1 || y > 3){
+        return "invalid coordinates"
+      }
+
+      let choice = grid[y -1][x -1]
+      if (choice === "🟥"){
+        return "🟥 💀"
+      } else {
+        return "🟦 🥳"
+      }
     }
 
     // 👉 CHALLENGE 3
-    function booleanize() {
+    function booleanize(argOb) {
+      for (let props in argOb){
+        if (props.length > 9) {
+          return "shorten all prop names to 9 chars or less"
+        } else if (argOb[props] === null){
+          delete argOb[props]
+        } else if (argOb[props] === 0){
+          argOb[props] = false
+        } else if (argOb[props] === 1){
+          argOb[props] = true
+        } 
+        } return argOb
       // 🧠 booleanize takes an object as its single argument, which can have any number of properties
       // Loop over the properties and then return the object, after applying the following transformations:
       //    * If a value is the number zero, it must be transformed into the Boolean false
@@ -122,7 +166,15 @@
     }
 
     // 👉 CHALLENGE 4
-    function scrub() {
+    function scrub(text, forbidden) {
+      let words = text.split(" ");
+       for (let i = 0; i < words.length; i++){
+        let word = words[i];
+        if (forbidden.includes(word)){
+          words[i] = "x".repeat(word.length);
+        }
+       }
+       return words.join(" ")
       // 🧠 scrub takes a string "text" as its first argument, and an array of forbidden words "forbidden" as its second
       // Any word in the text included in the array of forbidden words is replaced with a word of equal length but made of lowcase "x"
       // The scrubbed text is then returned from the function, as seen in the examples below
@@ -137,7 +189,31 @@
     }
 
     // 👉 CHALLENGE 5
-    function normalizePhoneNumber() {
+    function normalizePhoneNumber(number) {
+      if (number.length !== 10){
+        return "type a 10-digit number"
+      }
+      let numSplit = number.split('');
+        let newNum = ["(", "x", "x", "x", ")", " ", "x", "x", "x", "-", "x", "x", "x", "x"]
+        newNum[1] = numSplit[0]
+        newNum[2] = numSplit[1]
+        newNum[3] = numSplit[2]
+        newNum[6] = numSplit[3]
+        newNum[7] = numSplit[4]
+        newNum[8] = numSplit[5]
+        newNum[10] = numSplit[6]
+        newNum[11] = numSplit[7]
+        newNum[12] = numSplit[8]
+        newNum[13] = numSplit[9]
+        result = newNum.join("")
+        //return result
+
+      for (let dig of number){
+        if (dig !== "0" && dig !== "1" && dig !== "2"  && dig !== "3"  && dig !== "4"  && dig !== "5"  && dig !== "6"  && dig !== "7"  && dig !== "8"  && dig !== "9"){
+          return "invalid phone number"
+        }
+      }
+      return result
       // 🧠 normalizePhoneNumber takes a string as its only argument, representing a ten-digit number
       // The function returns a string formatted as seen below
       // 🧠 Examples of usage:
